@@ -15,18 +15,7 @@ dotenv.config();
 
 connectDB();
 
-const whitelist = [process.env.FRONTEND_URL];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use("/api/clientes", clienteRoutes);
 app.use("/api/platos", platoRoutes);

@@ -3,17 +3,14 @@ import Plato from "../models/Plato.js";
 import Cliente from "../models/Cliente.js";
 
 export const crearPedido = async (req, res) => {
-  const { cliente, plato } = req.body;
+  const plato = await Plato.findById(req.body.plato);
+  const cliente = await Cliente.findById(req.body.cliente);
+
+  if (!plato || !cliente) {
+    return res.status(404).json({ msg: "Plato o cliente no encontrado" });
+  }
 
   try {
-    const platoEncontrado = await Plato.findById(plato);
-    const clienteEncontrado = await Cliente.findById(cliente);
-    if (!platoEncontrado) {
-      return res.status(404).json({ msg: "Plato no encontrado" });
-    }
-    if (!clienteEncontrado) {
-      return res.status(404).json({ msg: "Cliente no encontrado" });
-    }
     const pedido = new Pedido(req.body);
     await pedido.save();
     res.json({ pedido });

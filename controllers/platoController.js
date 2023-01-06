@@ -1,14 +1,8 @@
 import Plato from "../models/Plato.js";
 
 export const crearPlato = async (req, res) => {
-  const { nombre, precio, categoria, imagen, descripcion, stock } = req.body;
-
   try {
-    let plato = await Plato.findOne({ nombre });
-    if (plato) {
-      return res.status(400).json({ msg: "El plato ya existe" });
-    }
-    plato = new Plato(req.body);
+    const plato = new Plato(req.body);
     await plato.save();
     res.json({ plato });
   } catch (error) {
